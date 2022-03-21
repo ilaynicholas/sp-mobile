@@ -3,8 +3,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'home_screen.dart';
 
 enum MobileVerificationState {
-  showMobileFormState,
-  showOtpFormState,
+  SHOW_MOBILE_FORM_STATE,
+  SHOW_OTP_FORM_STATE,
 }
 
 class TempScreen extends StatefulWidget {
@@ -15,7 +15,7 @@ class TempScreen extends StatefulWidget {
 }
 
 class _TempScreenState extends State<TempScreen> {
-  MobileVerificationState currentState = MobileVerificationState.showMobileFormState;
+  MobileVerificationState currentState = MobileVerificationState.SHOW_MOBILE_FORM_STATE;
 
   final phoneController = TextEditingController();
   final otpController = TextEditingController();
@@ -100,11 +100,15 @@ class _TempScreenState extends State<TempScreen> {
               codeSent: (verificationId, resendingToken) async {
                 setState(() {
                   showLoading = false;
-                  currentState = MobileVerificationState.showOtpFormState;
+                  currentState = MobileVerificationState.SHOW_OTP_FORM_STATE;
                   this.verificationId = verificationId;
                 });
               },
-              codeAutoRetrievalTimeout: (verificationId) async {}
+              codeAutoRetrievalTimeout: (verificationId) async {
+                setState(() {
+                  showLoading = false;
+                });
+              }
             );
           },
         ),
@@ -161,7 +165,7 @@ class _TempScreenState extends State<TempScreen> {
           ? const Center(
             child: CircularProgressIndicator()
           )
-          : currentState == MobileVerificationState.showMobileFormState
+          : currentState == MobileVerificationState.SHOW_MOBILE_FORM_STATE
             ? getMobileFormWidget(context)
             : getOtpFormWidget(context),
         padding: const EdgeInsets.all(16)

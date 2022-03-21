@@ -1,13 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:sp_mobile/screens/register-user-screen.dart';
 
-class LoginScreen extends StatefulWidget {
+class LoginScreen extends StatelessWidget {
   const LoginScreen({ Key? key }) : super(key: key);
 
-  @override
-  State<LoginScreen> createState() => _LoginScreenState();
-}
-
-class _LoginScreenState extends State<LoginScreen> {
   @override
   Widget build(BuildContext context) {
     return Material(
@@ -24,6 +20,16 @@ class _LoginScreenState extends State<LoginScreen> {
           crossAxisAlignment: CrossAxisAlignment.center,
           mainAxisAlignment: MainAxisAlignment.end,
           children: [
+            const Spacer(),
+            Container(
+              width: 200,
+              height: 200,
+              decoration: const BoxDecoration(
+                color: Color(0xFF008999),
+                shape: BoxShape.circle
+              )
+            ),
+            const Padding(padding: EdgeInsets.only(top: 15)),
             const Text(
               "GapanTrax",
               style: TextStyle(
@@ -32,16 +38,48 @@ class _LoginScreenState extends State<LoginScreen> {
                 color: Color(0xFF008999),
               )
             ),
+            const Padding(padding: EdgeInsets.only(bottom: 10.0)),
             const Text(
               "Contact Tracing Application of\nGapan City",
               style: TextStyle(
                 fontSize: 18.0,
                 fontWeight: FontWeight.bold,
                 color: Color(0xFF008999),
-              )
+              ),
+              textAlign: TextAlign.center,
             ),
+            const Spacer(),
+            Row(
+              children: [
+                Align(
+                  alignment: Alignment.centerLeft,
+                  child: Image.asset(
+                    'images/syringe.png',
+                    width: 100,
+                    height: 100,
+                    fit: BoxFit.cover
+                  ),
+                ),
+                const Spacer(),
+                Align(
+                  alignment: Alignment.centerRight,
+                  child: Image.asset(
+                    'images/face-mask.png',
+                    width: 100,
+                    height: 100,
+                    fit: BoxFit.cover
+                  ),
+                )
+              ],
+            ),
+            const Spacer(),
             ElevatedButton(
-              onPressed: () {},
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => const RegisterUserScreen())
+                );
+              },
               child: const Text(
                   "REGISTER",
                   style: TextStyle(
@@ -84,7 +122,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 minimumSize: const Size(300, 60)
               ),
             ),
-            const Padding(padding: EdgeInsets.only(bottom: 120.0))
+            const Padding(padding: EdgeInsets.only(bottom: 100.0))
           ],
         ),
       ),
