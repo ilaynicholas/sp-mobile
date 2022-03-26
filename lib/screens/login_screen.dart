@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:sp_mobile/screens/register-user-screen.dart';
+import 'package:sp_mobile/screens/register_user_screen.dart';
 
 class LoginScreen extends StatelessWidget {
   const LoginScreen({ Key? key }) : super(key: key);
@@ -84,7 +84,6 @@ class LoginScreen extends StatelessWidget {
                   "REGISTER",
                   style: TextStyle(
                       fontSize: 24.0,
-                      fontWeight: FontWeight.w600
                     )
                 ),
               style: ElevatedButton.styleFrom(
@@ -109,7 +108,6 @@ class LoginScreen extends StatelessWidget {
                   "Register as\nEstablishment",
                   style: TextStyle(
                       fontSize: 18.0,
-                      fontWeight: FontWeight.w600,
                     ),
                   textAlign: TextAlign.center,
                 ),
