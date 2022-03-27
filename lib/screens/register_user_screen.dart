@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
+import 'qr_screen.dart';
+
 class RegisterUserScreen extends StatefulWidget {
   const RegisterUserScreen({ Key? key }) : super(key: key);
 
@@ -16,11 +18,42 @@ class _RegisterUserScreenState extends State<RegisterUserScreen> {
   final middleNameController = TextEditingController();
   final lastNameController = TextEditingController();
   final numberController = TextEditingController();
-  final municipalityController = TextEditingController();
-  final barangayController = TextEditingController();
-  final vaccinationStatusController = TextEditingController();
 
   FirebaseAuth auth = FirebaseAuth.instance;
+
+  String? _selectedValueBarangay;
+  String? _selectedValueStatus;
+  List<String> barangays = [
+    "Balante",
+    "Bayanihan",
+    "Bulak",
+    "Bungo",
+    "Kapalangan",
+    "Mabuga",
+    "Maburak",
+    "Macabaklay",
+    "Mahipon",
+    "Malimba",
+    "Mangino",
+    "Marelo",
+    "Pambuan",
+    "Parcutela",
+    "Puting Tubig",
+    "San Lorenzo",
+    "San Nicolas",
+    "San Roque",
+    "San Vicente",
+    "Santa Cruz",
+    "Santo Cristo Norte",
+    "Santo Cristo Sur",
+    "Santo Niño"
+  ];
+  List<String> vaccinationStatuses = [
+    "Fully vaccinated with booster shot",
+    "Fully vaccinated without booster shot",
+    "One dose only",
+    "Not yet vaccinated"
+  ];
 
   @override
   void dispose() {
@@ -28,10 +61,6 @@ class _RegisterUserScreenState extends State<RegisterUserScreen> {
     middleNameController.dispose();
     lastNameController.dispose();
     numberController.dispose();
-    numberController.dispose();
-    municipalityController.dispose();
-    barangayController.dispose();
-    vaccinationStatusController.dispose();
     super.dispose();
   }
 
@@ -115,13 +144,20 @@ class _RegisterUserScreenState extends State<RegisterUserScreen> {
               ),
               const Padding(padding: EdgeInsets.symmetric(vertical: 10)),
               Container(
-                color: Colors.white,
+                decoration: const BoxDecoration(
+                  borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(25.0),
+                    topRight: Radius.circular(25.0)
+                  ),
+                  color: Colors.white
+                ),
                 child: Form(
                   key: _formKey,
+                  autovalidateMode: AutovalidateMode.disabled,
                   child: Column(
                     children: [
                       Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 10),
+                        padding: const EdgeInsets.fromLTRB(8, 20, 8, 10),
                         child: TextFormField(
                           controller: firstNameController,
                           validator: (value) {
@@ -129,25 +165,29 @@ class _RegisterUserScreenState extends State<RegisterUserScreen> {
                             return null;
                           },
                           decoration: const InputDecoration(
-                            border: OutlineInputBorder(),
-                            hintText: "First Name",
-                            hintStyle: TextStyle(fontSize: 14)
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.all(Radius.circular(10))
+                            ),
+                            labelText: "First Name",
+                            labelStyle: TextStyle(fontSize: 14)
                           )
                         )
                       ),
                       Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 10),
+                        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
                         child: TextFormField(
                           controller: middleNameController,
                           decoration: const InputDecoration(
-                            border: OutlineInputBorder(),
-                            hintText: "Middle Name (optional)",
-                            hintStyle: TextStyle(fontSize: 14)
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.all(Radius.circular(10))
+                            ),
+                            labelText: "Middle Name (optional)",
+                            labelStyle: TextStyle(fontSize: 14)
                           )
                         )
                       ),
                       Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 10),
+                        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
                         child: TextFormField(
                           controller: lastNameController,
                           validator: (value) {
@@ -155,70 +195,112 @@ class _RegisterUserScreenState extends State<RegisterUserScreen> {
                             return null;
                           },
                           decoration: const InputDecoration(
-                            border: OutlineInputBorder(),
-                            hintText: "Last Name",
-                            hintStyle: TextStyle(fontSize: 14)
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.all(Radius.circular(10))
+                            ),
+                            labelText: "Last Name",
+                            labelStyle: TextStyle(fontSize: 14)
                           )
                         )
                       ),
                       Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 10),
+                        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
                         child: TextFormField(
                           controller: numberController,
                           validator: (value) {
                             if(value == null || value.isEmpty) return "Please enter your mobile number";
+                            if(value.length != 9) return "Please enter 11 digits";
                             return null;
                           },
                           decoration: const InputDecoration(
-                            border: OutlineInputBorder(),
-                            hintText: "Mobile Number",
-                            hintStyle: TextStyle(fontSize: 14)
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.all(Radius.circular(10))
+                            ),
+                            labelText: "Mobile Number (09XXXXXXXXX)",
+                            labelStyle: TextStyle(fontSize: 14),
+                            prefixText: "09"
                           )
                         )
                       ),
                       Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 10),
+                        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
                         child: TextFormField(
-                          controller: municipalityController,
-                          validator: (value) {
-                            if(value == null || value.isEmpty) return "Please select your municipality";
-                            return null;
-                          },
+                          enabled: false,
                           decoration: const InputDecoration(
-                            border: OutlineInputBorder(),
-                            hintText: "Municipality",
-                            hintStyle: TextStyle(fontSize: 14)
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.all(Radius.circular(10))
+                            ),
+                            labelText: "Gapan City",
+                            labelStyle: TextStyle(fontSize: 14)
                           )
                         )
                       ),
                       Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 10),
-                        child: TextFormField(
-                          controller: barangayController,
+                        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+                        child: DropdownButtonFormField(
+                          value: _selectedValueBarangay,
+                          decoration: const InputDecoration(
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.all(Radius.circular(10))
+                            ),
+                            labelText: "Barangay",
+                            labelStyle: TextStyle(fontSize: 14)
+                          ),
+                          isExpanded: true,
+                          onChanged: (value) {
+                            setState(() {
+                              _selectedValueBarangay = value as String?;
+                            });
+                          },
+                          onSaved: (value) {
+                            setState(() {
+                              _selectedValueBarangay = value as String?;
+                            });
+                          },
                           validator: (value) {
-                            if(value == null || value.isEmpty) return "Please select your barangay";
+                            if(value == null) return "Please select a barangay";
                             return null;
                           },
-                          decoration: const InputDecoration(
-                            border: OutlineInputBorder(),
-                            hintText: "Barangay",
-                            hintStyle: TextStyle(fontSize: 14)
-                          )
+                          items: barangays.map((String val) {
+                            return DropdownMenuItem(
+                              value: val,
+                              child: Text(val)
+                            );
+                          }).toList()
                         )
                       ),
                       Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 10),
-                        child: TextFormField(
-                          controller: vaccinationStatusController,
+                        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+                        child: DropdownButtonFormField(
+                          value: _selectedValueStatus,
+                          decoration: const InputDecoration(
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.all(Radius.circular(10))
+                            ),
+                            labelText: "Are you vaccinated?",
+                            labelStyle: TextStyle(fontSize: 14)
+                          ),
+                          isExpanded: true,
+                          onChanged: (value) {
+                            setState(() {
+                              _selectedValueStatus = value as String;
+                            });
+                          },
+                          onSaved: (value) {
+                            setState(() {
+                              _selectedValueStatus = value as String;
+                            });
+                          },
                           validator: (value) {
-                            if(value == null || value.isEmpty) return "Please select your vaccination status";
+                            if(value == null) return "Please select a vaccination status";
                             return null;
                           },
-                          decoration: const InputDecoration(
-                            border: OutlineInputBorder(),
-                            hintText: "Are you vaccinated?",
-                            hintStyle: TextStyle(fontSize: 14)
-                          )
+                          items: vaccinationStatuses.map((String val) {
+                            return DropdownMenuItem(
+                              value: val,
+                              child: Text(val)
+                            );
+                          }).toList()
                         )
                       ),
                       Padding(
@@ -226,18 +308,20 @@ class _RegisterUserScreenState extends State<RegisterUserScreen> {
                         child: ElevatedButton(
                           onPressed: () async {
                             if (_formKey.currentState!.validate()) {
+                              await auth.signInAnonymously();
                               addUser(
-                                firstNameController.text + middleNameController.text + lastNameController.text,
-                                numberController.text,
-                                municipalityController.text,
-                                barangayController.text,
-                                int.parse(vaccinationStatusController.text)
+                                FirebaseAuth.instance.currentUser!.uid,
+                                middleNameController.text == "" ? firstNameController.text + " " + lastNameController.text : firstNameController.text + " " + middleNameController.text + " " + lastNameController.text,
+                                "09" + numberController.text,
+                                "Gapan City",
+                                _selectedValueBarangay,
+                                vaccinationStatuses.indexOf(_selectedValueStatus!)
                               );
-                              // await auth.signInAnonymously();
+                              
                             }
                           },
                           child: const Text(
-                              "SUBMIT",
+                              "REGISTER",
                               style: TextStyle(
                                   fontSize: 24.0,
                                   fontWeight: FontWeight.bold
@@ -264,17 +348,21 @@ class _RegisterUserScreenState extends State<RegisterUserScreen> {
     );
   }
 
-  Future<void> addUser(name, number, municipality, barangay, vaccinationStatus) {
+  Future<void> addUser(uid, name, number, municipality, barangay, vaccinationStatus) {
       return FirebaseFirestore.instance
         .collection("users")
-        .add({
+        .doc(uid)
+        .set({
           'name': name,
           'number': number,
           'municipality': municipality,
           'barangay': barangay,
           'vaccinationStatus': vaccinationStatus
         })
-        .then((value) => print("User Added"))
-        .catchError((error) => print("Failed to add user: $error"));
+        .then((value) => Navigator.push(
+          context, 
+          MaterialPageRoute(builder: (context) => const QRScreen())))
+        .catchError((error) => ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+            content: Text(error))));
     }
 }
