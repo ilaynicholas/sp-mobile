@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-import 'qr_screen.dart';
+import 'user_navbar.dart';
 
 class RegisterUserScreen extends StatefulWidget {
   const RegisterUserScreen({ Key? key }) : super(key: key);
@@ -361,7 +361,7 @@ class _RegisterUserScreenState extends State<RegisterUserScreen> {
         })
         .then((value) => Navigator.push(
           context, 
-          MaterialPageRoute(builder: (context) => const QRScreen())))
+          MaterialPageRoute(builder: (context) => const UserNavbar())))
         .catchError((error) => ScaffoldMessenger.of(context).showSnackBar(SnackBar(
             content: Text(error))));
     }

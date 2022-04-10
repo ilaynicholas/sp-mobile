@@ -1,22 +1,20 @@
 import 'package:flutter/material.dart';
 
-class QRScreen extends StatefulWidget {
-  const QRScreen({ Key? key }) : super(key: key);
+import 'symptoms_screen.dart';
+
+class UserNavbar extends StatefulWidget {
+  const UserNavbar({ Key? key }) : super(key: key);
 
   @override
-  State<QRScreen> createState() => _QRScreenState();
+  State<UserNavbar> createState() => _UserNavbarState();
 }
 
-class _QRScreenState extends State<QRScreen> {
+class _UserNavbarState extends State<UserNavbar> {
   int _selectedIndex = 2;
 
-  static const TextStyle optionStyle =
-      TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
+  static const TextStyle optionStyle = TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
   static const List<Widget> _widgetOptions = <Widget>[
-    Text(
-      'Index 0: Symptoms',
-      style: optionStyle,
-    ),
+    SymptomsScreen(),
     Text(
       'Index 1: Cases',
       style: optionStyle,
@@ -70,7 +68,7 @@ class _QRScreenState extends State<QRScreen> {
             ),
             BottomNavigationBarItem(
               icon: Icon(Icons.notifications_none_outlined),
-              label: "NOTIFICATIONS"
+              label: "NOTIFICATIONS",
             ),
             BottomNavigationBarItem(
               icon: Icon(Icons.person_outline_outlined),
