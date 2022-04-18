@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-
+import 'cases_screen.dart';
 import 'symptoms_screen.dart';
 
 class UserNavbar extends StatefulWidget {
@@ -15,10 +15,7 @@ class _UserNavbarState extends State<UserNavbar> {
   static const TextStyle optionStyle = TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
   static const List<Widget> _widgetOptions = <Widget>[
     SymptomsScreen(),
-    Text(
-      'Index 1: Cases',
-      style: optionStyle,
-    ),
+    CasesScreen(),
     Text(
       'Index 2: QR Code',
       style: optionStyle,
