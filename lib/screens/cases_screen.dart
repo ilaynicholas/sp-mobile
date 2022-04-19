@@ -1,8 +1,8 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-import '../models/cases.dart';
-import '../models/region_cases.dart';
+import '../models/case.dart';
+import '../models/region_case.dart';
 
 class CasesScreen extends StatefulWidget {
   const CasesScreen({ Key? key }) : super(key: key);
@@ -12,8 +12,8 @@ class CasesScreen extends StatefulWidget {
 }
 
 class _CasesScreenState extends State<CasesScreen> {
-  late Future<Cases> futureCases;
-  late Future<RegionCases> futureRegionCases;
+  late Future<Case> futureCases;
+  late Future<RegionCase> futureRegionCases;
 
   @override
   void initState() {
@@ -103,7 +103,7 @@ class _CasesScreenState extends State<CasesScreen> {
                             fontSize: 18
                           ),
                         ),
-                        FutureBuilder<RegionCases>(
+                        FutureBuilder<RegionCase>(
                           future: futureRegionCases,
                           builder: (context, snapshot) {
                             if (snapshot.hasData) {
@@ -155,7 +155,7 @@ class _CasesScreenState extends State<CasesScreen> {
                             fontSize: 18
                           ),
                         ),
-                        FutureBuilder<RegionCases>(
+                        FutureBuilder<RegionCase>(
                           future: futureRegionCases,
                           builder: (context, snapshot) {
                             if (snapshot.hasData) {
@@ -211,12 +211,12 @@ class _CasesScreenState extends State<CasesScreen> {
                             fontSize: 18
                           ),
                         ),
-                        FutureBuilder<RegionCases>(
+                        FutureBuilder<RegionCase>(
                           future: futureRegionCases,
                           builder: (context, snapshot) {
                             if (snapshot.hasData) {
                               return Text(
-                                snapshot.data!.totalCases.toString(),
+                                snapshot.data!.recoveries.toString(),
                                 style: const TextStyle(
                                   fontWeight: FontWeight.bold,
                                   fontSize: 36,
@@ -263,7 +263,7 @@ class _CasesScreenState extends State<CasesScreen> {
                             fontSize: 18
                           ),
                         ),
-                        FutureBuilder<RegionCases>(
+                        FutureBuilder<RegionCase>(
                           future: futureRegionCases,
                           builder: (context, snapshot) {
                             if (snapshot.hasData) {
@@ -363,7 +363,7 @@ class _CasesScreenState extends State<CasesScreen> {
                             fontSize: 18
                           ),
                         ),
-                        FutureBuilder<Cases>(
+                        FutureBuilder<Case>(
                           future: futureCases,
                           builder: (context, snapshot) {
                             if (snapshot.hasData) {
@@ -415,7 +415,7 @@ class _CasesScreenState extends State<CasesScreen> {
                             fontSize: 18
                           ),
                         ),
-                        FutureBuilder<Cases>(
+                        FutureBuilder<Case>(
                           future: futureCases,
                           builder: (context, snapshot) {
                             if (snapshot.hasData) {
@@ -449,21 +449,21 @@ class _CasesScreenState extends State<CasesScreen> {
     );
   }
 
-  Future<Cases> fetchCases() async {
+  Future<Case> fetchCases() async {
     final response = await http.get(Uri.parse("https://covid19-api-philippines.herokuapp.com/api/summary"));
 
     if(response.statusCode == 200) {
-      return Cases.fromJson(jsonDecode(response.body));
+      return Case.fromJson(jsonDecode(response.body));
     } else {
       throw Exception("Failed to load cases");
     }
   }
 
-  Future<RegionCases> fetchRegionCases() async {
+  Future<RegionCase> fetchRegionCases() async {
     final response = await http.get(Uri.parse("https://covid19-api-philippines.herokuapp.com/api/summary?region=region+iii:+central+luzon"));
 
     if(response.statusCode == 200) {
-      return RegionCases.fromJson(jsonDecode(response.body));
+      return RegionCase.fromJson(jsonDecode(response.body));
     } else {
       throw Exception("Failed to load cases");
     }

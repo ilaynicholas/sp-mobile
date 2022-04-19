@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-
 import 'user_navbar.dart';
-
+import '../models/user.dart';
 class RegisterUserScreen extends StatefulWidget {
   const RegisterUserScreen({ Key? key }) : super(key: key);
 
@@ -309,13 +308,16 @@ class _RegisterUserScreenState extends State<RegisterUserScreen> {
                           onPressed: () async {
                             if (_formKey.currentState!.validate()) {
                               await auth.signInAnonymously();
+                              NewUser newUser = NewUser(
+                                name: middleNameController.text == "" ? firstNameController.text + " " + lastNameController.text : firstNameController.text + " " + middleNameController.text + " " + lastNameController.text,
+                                number: "09" + numberController.text,
+                                municipality: "Gapan City",
+                                barangay: _selectedValueBarangay,
+                                vaccinationStatus: vaccinationStatuses.indexOf(_selectedValueStatus!)
+                              );
                               addUser(
                                 FirebaseAuth.instance.currentUser!.uid,
-                                middleNameController.text == "" ? firstNameController.text + " " + lastNameController.text : firstNameController.text + " " + middleNameController.text + " " + lastNameController.text,
-                                "09" + numberController.text,
-                                "Gapan City",
-                                _selectedValueBarangay,
-                                vaccinationStatuses.indexOf(_selectedValueStatus!)
+                                newUser
                               );
                               
                             }
@@ -348,16 +350,16 @@ class _RegisterUserScreenState extends State<RegisterUserScreen> {
     );
   }
 
-  Future<void> addUser(uid, name, number, municipality, barangay, vaccinationStatus) {
+  Future<void> addUser(uid, NewUser newUser) {
       return FirebaseFirestore.instance
         .collection("users")
         .doc(uid)
         .set({
-          'name': name,
-          'number': number,
-          'municipality': municipality,
-          'barangay': barangay,
-          'vaccinationStatus': vaccinationStatus
+          'name': newUser.name,
+          'number': newUser.number,
+          'municipality': newUser.municipality,
+          'barangay': newUser.barangay,
+          'vaccinationStatus': newUser.vaccinationStatus
         })
         .then((value) => Navigator.push(
           context, 

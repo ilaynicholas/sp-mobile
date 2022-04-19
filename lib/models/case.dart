@@ -1,14 +1,14 @@
-class Cases {
+class Case {
   final int activeCases;
   final int recoveries;
 
-  const Cases({
+  const Case({
     required this.activeCases,
     required this.recoveries
   });
 
-  factory Cases.fromJson(Map<String, dynamic> json) {
-    return Cases(
+  factory Case.fromJson(Map<String, dynamic> json) {
+    return Case(
       activeCases: json['data']['active_cases'],
       recoveries: json['data']['recoveries']
     );

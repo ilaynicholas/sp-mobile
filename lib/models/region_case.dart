@@ -1,18 +1,18 @@
-class RegionCases {
+class RegionCase {
   final int activeCases;
   final int totalCases;
   final int recoveries;
   final int deaths;
 
-  const RegionCases({
+  const RegionCase({
     required this.activeCases,
     required this.totalCases,
     required this.recoveries,
     required this.deaths
   });
 
-  factory RegionCases.fromJson(Map<String, dynamic> json) {
-    return RegionCases(
+  factory RegionCase.fromJson(Map<String, dynamic> json) {
+    return RegionCase(
       activeCases: json['data']['active_cases'],
       totalCases: json['data']['total'],
       recoveries: json['data']['recoveries'],
