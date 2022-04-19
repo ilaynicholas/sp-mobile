@@ -1,6 +1,8 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import '../models/cases.dart';
+import '../models/region_cases.dart';
 
 class CasesScreen extends StatefulWidget {
   const CasesScreen({ Key? key }) : super(key: key);
@@ -11,11 +13,13 @@ class CasesScreen extends StatefulWidget {
 
 class _CasesScreenState extends State<CasesScreen> {
   late Future<Cases> futureCases;
+  late Future<RegionCases> futureRegionCases;
 
   @override
   void initState() {
     super.initState();
     futureCases = fetchCases();
+    futureRegionCases = fetchRegionCases();
   }
 
   @override
@@ -89,8 +93,37 @@ class _CasesScreenState extends State<CasesScreen> {
                         ),
                       ],
                     ),
-                    child: const Text(
-                      "New Cases",
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        const Text(
+                          "Active Cases",
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 18
+                          ),
+                        ),
+                        FutureBuilder<RegionCases>(
+                          future: futureRegionCases,
+                          builder: (context, snapshot) {
+                            if (snapshot.hasData) {
+                              return Text(
+                                snapshot.data!.activeCases.toString(),
+                                style: const TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 36,
+                                  color: Color(0xFFFF0000)
+                                )
+                              );
+                            } else if (snapshot.hasError) {
+                              return Text('${snapshot.error}');
+                            }
+
+                            // By default, show a loading spinner.
+                            return const CircularProgressIndicator();
+                          }
+                        )
+                      ],
                     )
                   )
                 ),
@@ -112,8 +145,37 @@ class _CasesScreenState extends State<CasesScreen> {
                         ),
                       ],
                     ),
-                    child: const Text(
-                      "Active"
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        const Text(
+                          "Total Cases",
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 18
+                          ),
+                        ),
+                        FutureBuilder<RegionCases>(
+                          future: futureRegionCases,
+                          builder: (context, snapshot) {
+                            if (snapshot.hasData) {
+                              return Text(
+                                snapshot.data!.totalCases.toString(),
+                                style: const TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 36,
+                                  color: Color(0xFF008999)
+                                )
+                              );
+                            } else if (snapshot.hasError) {
+                              return Text('${snapshot.error}');
+                            }
+
+                            // By default, show a loading spinner.
+                            return const CircularProgressIndicator();
+                          }
+                        )
+                      ],
                     )
                   )
                 )
@@ -139,8 +201,37 @@ class _CasesScreenState extends State<CasesScreen> {
                         ),
                       ],
                     ),
-                    child: const Text(
-                      "Recoveries",
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        const Text(
+                          "Recoveries",
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 18
+                          ),
+                        ),
+                        FutureBuilder<RegionCases>(
+                          future: futureRegionCases,
+                          builder: (context, snapshot) {
+                            if (snapshot.hasData) {
+                              return Text(
+                                snapshot.data!.totalCases.toString(),
+                                style: const TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 36,
+                                  color: Color(0xFF2FA804)
+                                )
+                              );
+                            } else if (snapshot.hasError) {
+                              return Text('${snapshot.error}');
+                            }
+
+                            // By default, show a loading spinner.
+                            return const CircularProgressIndicator();
+                          }
+                        )
+                      ],
                     )
                   )
                 ),
@@ -162,8 +253,37 @@ class _CasesScreenState extends State<CasesScreen> {
                         ),
                       ],
                     ),
-                    child: const Text(
-                      "Deaths"
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        const Text(
+                          "Deaths",
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 18
+                          ),
+                        ),
+                        FutureBuilder<RegionCases>(
+                          future: futureRegionCases,
+                          builder: (context, snapshot) {
+                            if (snapshot.hasData) {
+                              return Text(
+                                snapshot.data!.deaths.toString(),
+                                style: const TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 36,
+                                  color: Color(0xFF606060)
+                                )
+                              );
+                            } else if (snapshot.hasError) {
+                              return Text('${snapshot.error}');
+                            }
+
+                            // By default, show a loading spinner.
+                            return const CircularProgressIndicator();
+                          }
+                        )
+                      ],
                     )
                   )
                 )
@@ -304,7 +424,7 @@ class _CasesScreenState extends State<CasesScreen> {
                                 style: const TextStyle(
                                   fontWeight: FontWeight.bold,
                                   fontSize: 36,
-                                  color: Color(0xFF008999)
+                                  color: Color(0xFF2FA804)
                                 )
                               );
                             } else if (snapshot.hasError) {
@@ -340,52 +460,12 @@ class _CasesScreenState extends State<CasesScreen> {
   }
 
   Future<RegionCases> fetchRegionCases() async {
-    final response = await http.get(Uri.parse("https://covid19-api-philippines.herokuapp.com/api/summary?region+iii:+central+luzon"));
+    final response = await http.get(Uri.parse("https://covid19-api-philippines.herokuapp.com/api/summary?region=region+iii:+central+luzon"));
 
     if(response.statusCode == 200) {
       return RegionCases.fromJson(jsonDecode(response.body));
     } else {
       throw Exception("Failed to load cases");
     }
-  }
-}
-
-class Cases {
-  final int activeCases;
-  final int recoveries;
-
-  const Cases({
-    required this.activeCases,
-    required this.recoveries
-  });
-
-  factory Cases.fromJson(Map<String, dynamic> json) {
-    return Cases(
-      activeCases: json['data']['active_cases'],
-      recoveries: json['data']['recoveries']
-    );
-  }
-}
-
-class RegionCases {
-  final int activeCases;
-  final int totalCases;
-  final int recoveries;
-  final int deaths;
-
-  const RegionCases({
-    required this.activeCases,
-    required this.totalCases,
-    required this.recoveries,
-    required this.deaths
-  });
-
-  factory RegionCases.fromJson(Map<String, dynamic> json) {
-    return RegionCases(
-      activeCases: json['data']['active_cases'],
-      totalCases: json['data']['total'],
-      recoveries: json['data']['recoveries'],
-      deaths: json['data']['deaths']
-    );
   }
 }
