@@ -54,6 +54,8 @@ class _RegisterUserScreenState extends State<RegisterUserScreen> {
     "Not yet vaccinated"
   ];
 
+  bool isLoading = false;
+
   @override
   void dispose() {
     firstNameController.dispose();
@@ -322,13 +324,15 @@ class _RegisterUserScreenState extends State<RegisterUserScreen> {
                               
                             }
                           },
-                          child: const Text(
-                              "REGISTER",
-                              style: TextStyle(
-                                  fontSize: 24.0,
-                                  fontWeight: FontWeight.bold
-                                )
-                            ),
+                          child: 
+                            isLoading ? const CircularProgressIndicator(color: Colors.white) : 
+                              const Text(
+                                "REGISTER",
+                                style: TextStyle(
+                                    fontSize: 24.0,
+                                    fontWeight: FontWeight.bold
+                                  )
+                              ),
                           style: ElevatedButton.styleFrom(
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(25.0)
@@ -350,21 +354,31 @@ class _RegisterUserScreenState extends State<RegisterUserScreen> {
     );
   }
 
-  Future<void> addUser(uid, NewUser newUser) {
-      return FirebaseFirestore.instance
-        .collection("users")
-        .doc(uid)
-        .set({
-          'name': newUser.name,
-          'number': newUser.number,
-          'municipality': newUser.municipality,
-          'barangay': newUser.barangay,
-          'vaccinationStatus': newUser.vaccinationStatus
-        })
-        .then((value) => Navigator.push(
-          context, 
-          MaterialPageRoute(builder: (context) => const UserNavbar())))
-        .catchError((error) => ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-            content: Text(error))));
-    }
+  addUser(uid, NewUser newUser) async {
+    setState(() {
+      isLoading = true;
+    });
+
+    await FirebaseFirestore.instance
+      .collection("users")
+      .doc(uid)
+      .set({
+        'name': newUser.name,
+        'number': newUser.number,
+        'municipality': newUser.municipality,
+        'barangay': newUser.barangay,
+        'vaccinationStatus': newUser.vaccinationStatus
+      })
+      .catchError((error) => ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          content: Text(error))));
+
+    setState(() {
+      isLoading = false;
+    });
+
+    Navigator.push(
+      context, 
+      MaterialPageRoute(builder: (context) => const UserNavbar())
+    );
+  }
 }
