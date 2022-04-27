@@ -12,4 +12,14 @@ class NewUser {
     required this.barangay,
     required this.vaccinationStatus
   });
+
+  factory NewUser.fromJson(Map<String, dynamic> json) {
+    return NewUser(
+      name: json['name'], 
+      number: json['number'], 
+      municipality: json['municipality'], 
+      barangay: json['barangay'], 
+      vaccinationStatus: json['vaccinationStatus']
+    );
+  }
 }

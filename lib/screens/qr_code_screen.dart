@@ -53,8 +53,7 @@ class _QRCodeScreenState extends State<QRCodeScreen> {
               )
             ),
             QrImage(
-              //FirebaseAuth.instance.currentUser!.uid
-              data: "1",//FirebaseAuth.instance.currentUser!.uid,
+              data: "1", //FirebaseAuth.instance.currentUser!.uid,
               version: QrVersions.auto,
               size: 300.0,
               backgroundColor: Colors.white

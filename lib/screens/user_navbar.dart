@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'cases_screen.dart';
+import 'profile_screen.dart';
 import 'qr_code_screen.dart';
 import 'symptoms_screen.dart';
 
@@ -22,10 +23,7 @@ class _UserNavbarState extends State<UserNavbar> {
       'Index 3: Notifications',
       style: optionStyle,
     ),
-    Text(
-      'Index 4: Profile',
-      style: optionStyle,
-    ),
+    ProfileScreen()
   ];
 
   void _onItemTapped(int index) {
