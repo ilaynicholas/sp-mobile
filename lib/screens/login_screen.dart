@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:sp_mobile/screens/register_user_screen.dart';
+import 'register_estab_screen.dart';
 
 class LoginScreen extends StatelessWidget {
   const LoginScreen({ Key? key }) : super(key: key);
@@ -103,7 +104,12 @@ class LoginScreen extends StatelessWidget {
               )
             ),
             ElevatedButton(
-              onPressed: () {},
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => const RegisterEstabScreen())
+                );
+              },
               child: const Text(
                   "Register as\nEstablishment",
                   style: TextStyle(

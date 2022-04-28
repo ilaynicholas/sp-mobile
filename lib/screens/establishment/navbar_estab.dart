@@ -1,29 +1,29 @@
 import 'package:flutter/material.dart';
-import 'cases_screen.dart';
-import 'profile_screen.dart';
-import 'qr_code_screen.dart';
-import 'symptoms_screen.dart';
+import 'package:sp_mobile/screens/establishment/qr_scanner.dart';
+import 'profile_estab_screen.dart';
+import '../cases_screen.dart';
+import '../symptoms_screen.dart';
 
-class UserNavbar extends StatefulWidget {
-  const UserNavbar({ Key? key }) : super(key: key);
+class EstabNavbar extends StatefulWidget {
+  const EstabNavbar({ Key? key }) : super(key: key);
 
   @override
-  State<UserNavbar> createState() => _UserNavbarState();
+  State<EstabNavbar> createState() => _EstabNavbarState();
 }
 
-class _UserNavbarState extends State<UserNavbar> {
+class _EstabNavbarState extends State<EstabNavbar> {
   int _selectedIndex = 2;
 
   static const TextStyle optionStyle = TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
   static const List<Widget> _widgetOptions = <Widget>[
     SymptomsScreen(),
     CasesScreen(),
-    QRCodeScreen(),
+    QRScannerScreen(),
     Text(
       'Index 3: Notifications',
       style: optionStyle,
     ),
-    ProfileScreen()
+    ProfileEstabScreen()
   ];
 
   void _onItemTapped(int index) {
@@ -56,8 +56,8 @@ class _UserNavbarState extends State<UserNavbar> {
               label: "CASES"
             ),
             BottomNavigationBarItem(
-              icon: Icon(Icons.qr_code_outlined),
-              label: "QR CODE"
+              icon: Icon(Icons.qr_code_scanner_outlined),
+              label: "QR SCANNER"
             ),
             BottomNavigationBarItem(
               icon: Icon(Icons.notifications_none_outlined),
