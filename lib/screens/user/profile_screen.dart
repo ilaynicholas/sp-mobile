@@ -12,6 +12,10 @@ class ProfileScreen extends StatefulWidget {
 }
 
 class _ProfileScreenState extends State<ProfileScreen> {
+  Stream<DocumentSnapshot> documentStream = FirebaseFirestore.instance.collection('users')
+    .doc("RbdBr0tRI2O8lDdK1ad7VV440O12")
+    .snapshots();
+
   late Future<NewUser> futureUserDetails;
 
   List<String> vaccinationStatuses = [
@@ -20,6 +24,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
     "One dose only",
     "Not yet vaccinated"
   ];
+
+  int? _status = 0;
 
   @override
   void initState() {
@@ -41,186 +47,189 @@ class _ProfileScreenState extends State<ProfileScreen> {
         children: [
           const Padding(padding: EdgeInsets.only(top: 56)),
           const SizedBox(height: 56),
-          Container(
-            width: double.infinity,
-            decoration: const BoxDecoration(
-              borderRadius: BorderRadius.only(
-                topLeft: Radius.circular(25.0),
-                topRight: Radius.circular(25.0),
-                bottomLeft: Radius.circular(25.0),
-                bottomRight: Radius.circular(25.0),
+          Expanded(
+            child: Container(
+              width: double.infinity,
+              decoration: const BoxDecoration(
+                borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(25.0),
+                  topRight: Radius.circular(25.0),
+                ),
+                color: Colors.white
               ),
-              color: Colors.white
-            ),
-            child: Padding(
-              padding: const EdgeInsets.all(20),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  FutureBuilder<NewUser>(
-                    future: futureUserDetails,
-                    builder: (context, snapshot) {
-                      if (snapshot.hasData) {
-                        return Text(
-                          snapshot.data!.name.toString(),
-                          style: const TextStyle(
-                            fontSize: 24,
-                            fontWeight: FontWeight.bold,
-                            color: Color(0xFF13677D)
-                          )
-                        );
-                      } else if (snapshot.hasError) {
-                        return Text('${snapshot.error}');
+              child: Padding(
+                padding: const EdgeInsets.all(20),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    FutureBuilder<NewUser>(
+                      future: futureUserDetails,
+                      builder: (context, snapshot) {
+                        if (snapshot.hasData) {
+                          return Text(
+                            snapshot.data!.name.toString(),
+                            style: const TextStyle(
+                              fontSize: 24,
+                              fontWeight: FontWeight.bold,
+                              color: Color(0xFF13677D)
+                            )
+                          );
+                        } else if (snapshot.hasError) {
+                          return Text('${snapshot.error}');
+                        }
+          
+                        return const CircularProgressIndicator();
                       }
-
-                      return const CircularProgressIndicator();
-                    }
-                  ),
-                  FutureBuilder<NewUser>(
-                    future: futureUserDetails,
-                    builder: (context, snapshot) {
-                      if (snapshot.hasData) {
-                        return Text(
-                          snapshot.data!.barangay.toString() + ", " + snapshot.data!.municipality.toString(),
-                          style: const TextStyle(
-                            fontSize: 18,
-                          )
-                        );
-                      } else if (snapshot.hasError) {
-                        return Text('${snapshot.error}');
+                    ),
+                    FutureBuilder<NewUser>(
+                      future: futureUserDetails,
+                      builder: (context, snapshot) {
+                        if (snapshot.hasData) {
+                          return Text(
+                            snapshot.data!.barangay.toString() + ", " + snapshot.data!.municipality.toString(),
+                            style: const TextStyle(
+                              fontSize: 18,
+                            )
+                          );
+                        } else if (snapshot.hasError) {
+                          return Text('${snapshot.error}');
+                        }
+          
+                        return const CircularProgressIndicator();
                       }
-
-                      return const CircularProgressIndicator();
-                    }
-                  ),
-                  FutureBuilder<NewUser>(
-                    future: futureUserDetails,
-                    builder: (context, snapshot) {
-                      if (snapshot.hasData) {
-                        return Text(
-                          snapshot.data!.number.toString(),
-                          style: const TextStyle(
-                            fontSize: 18,
-                          )
-                        );
-                      } else if (snapshot.hasError) {
-                        return Text('${snapshot.error}');
+                    ),
+                    FutureBuilder<NewUser>(
+                      future: futureUserDetails,
+                      builder: (context, snapshot) {
+                        if (snapshot.hasData) {
+                          return Text(
+                            snapshot.data!.number.toString(),
+                            style: const TextStyle(
+                              fontSize: 18,
+                            )
+                          );
+                        } else if (snapshot.hasError) {
+                          return Text('${snapshot.error}');
+                        }
+          
+                        return const CircularProgressIndicator();
                       }
-
-                      return const CircularProgressIndicator();
-                    }
-                  ),
-                  FutureBuilder<NewUser>(
-                    future: futureUserDetails,
-                    builder: (context, snapshot) {
-                      if (snapshot.hasData) {
-                        return Text(
-                          vaccinationStatuses[snapshot.data!.vaccinationStatus],
-                          style: const TextStyle(
-                            fontSize: 18,
-                            fontWeight: FontWeight.bold
-                          )
-                        );
-                      } else if (snapshot.hasError) {
-                        return Text('${snapshot.error}');
+                    ),
+                    StreamBuilder<DocumentSnapshot>(
+                      stream: documentStream,
+                      builder: (BuildContext context, AsyncSnapshot<DocumentSnapshot> snapshot) {
+                        if (snapshot.hasData) {
+                          return Text(
+                            vaccinationStatuses[snapshot.data!['vaccinationStatus']],
+                            style: const TextStyle(
+                              fontSize: 18,
+                              fontWeight: FontWeight.bold
+                            )
+                          );
+                        } else if (snapshot.hasError) {
+                          return Text('${snapshot.error}');
+                        }
+          
+                        return const CircularProgressIndicator();
                       }
-
-                      return const CircularProgressIndicator();
-                    }
-                  ),
-                  const SizedBox(height: 20),
-                  Center(
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 8),
-                      child: ElevatedButton(
-                        onPressed: () { // update vaccination status page
-                        
-                        },
-                        child: const Text(
-                            "UPDATE VACCINATION STATUS",
-                            style: TextStyle(
-                                fontSize: 18.0,
-                                fontWeight: FontWeight.bold
-                              )
+                    ),
+                    const SizedBox(height: 20),
+                    Center(
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 8),
+                        child: ElevatedButton(
+                          onPressed: () {
+                            showDialog(
+                              context: context,
+                              builder: (BuildContext context) => _buildPopupDialog(context)
+                            );
+                          },
+                          child: const Text(
+                              "UPDATE VACCINATION STATUS",
+                              style: TextStyle(
+                                  fontSize: 18.0,
+                                  fontWeight: FontWeight.bold
+                                )
+                            ),
+                          style: ElevatedButton.styleFrom(
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(25.0)
+                            ),
+                            primary: const Color(0xFF008999),
+                            onPrimary: Colors.white,
+                            minimumSize: const Size(300, 60)
                           ),
-                        style: ElevatedButton.styleFrom(
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(25.0)
-                          ),
-                          primary: const Color(0xFF008999),
-                          onPrimary: Colors.white,
-                          minimumSize: const Size(300, 60)
-                        ),
-                      )
+                        )
+                      ),
                     ),
-                  ),
-                  const SizedBox(height:40),
-                  const Text(
-                    "Essential Links",
-                    style: TextStyle(
-                      fontSize: 24,
-                      fontWeight: FontWeight.bold
-                    ),
-                  ),
-                  const SizedBox(height: 20),
-                  InkWell(
-                    child: const Text(
-                      "\u2022 Batang Gapan Facebook Page",
+                    const SizedBox(height:40),
+                    const Text(
+                      "Essential Links",
                       style: TextStyle(
-                        fontSize: 18,
-                        decoration: TextDecoration.underline
-                      )
+                        fontSize: 24,
+                        fontWeight: FontWeight.bold
+                      ),
                     ),
-                    onTap: () => launchUrl(Uri.parse('https://www.facebook.com/batanggapanako')),
-                  ),
-                  InkWell(
-                    child: const Text(
-                      "\u2022 Gapan City Official Website",
+                    const SizedBox(height: 20),
+                    InkWell(
+                      child: const Text(
+                        "\u2022 Batang Gapan Facebook Page",
+                        style: TextStyle(
+                          fontSize: 18,
+                          decoration: TextDecoration.underline
+                        )
+                      ),
+                      onTap: () => launchUrl(Uri.parse('https://www.facebook.com/batanggapanako')),
+                    ),
+                    InkWell(
+                      child: const Text(
+                        "\u2022 Gapan City Official Website",
+                        style: TextStyle(
+                          fontSize: 18,
+                          decoration: TextDecoration.underline
+                        )
+                      ),
+                      onTap: () => launchUrl(Uri.parse('https://www.cityofgapan.com/')),
+                    ),
+                     InkWell(
+                      child: const Text(
+                        "\u2022 Department of Health Official Website",
+                        style: TextStyle(
+                          fontSize: 18,
+                          decoration: TextDecoration.underline
+                        )
+                      ),
+                      onTap: () => launchUrl(Uri.parse('https://doh.gov.ph/')),
+                    ),
+                    const SizedBox(height: 60),
+                    const Text(
+                      "Hotlines",
                       style: TextStyle(
-                        fontSize: 18,
-                        decoration: TextDecoration.underline
-                      )
+                        fontSize: 24,
+                        fontWeight: FontWeight.bold
+                      ),
                     ),
-                    onTap: () => launchUrl(Uri.parse('https://www.cityofgapan.com/')),
-                  ),
-                   InkWell(
-                    child: const Text(
-                      "\u2022 Department of Health Official Website",
+                    const SizedBox(height: 20),
+                    const Text(
+                      "\u2022 Local Hospital: 09759196958",
                       style: TextStyle(
-                        fontSize: 18,
-                        decoration: TextDecoration.underline
+                        fontSize: 18
                       )
                     ),
-                    onTap: () => launchUrl(Uri.parse('https://doh.gov.ph/')),
-                  ),
-                  const SizedBox(height: 60),
-                  const Text(
-                    "Hotlines",
-                    style: TextStyle(
-                      fontSize: 24,
-                      fontWeight: FontWeight.bold
+                    const Text(
+                      "\u2022 City Hall: (044) 4860513",
+                      style: TextStyle(
+                        fontSize: 18
+                      )
                     ),
-                  ),
-                  const SizedBox(height: 20),
-                  const Text(
-                    "\u2022 Local Hospital: 09759196958",
-                    style: TextStyle(
-                      fontSize: 18
+                    const Text(
+                      "\u2022 Vaccination Center: 09914485475",
+                      style: TextStyle(
+                        fontSize: 18
+                      )
                     )
-                  ),
-                  const Text(
-                    "\u2022 City Hall: (044) 4860513",
-                    style: TextStyle(
-                      fontSize: 18
-                    )
-                  ),
-                  const Text(
-                    "\u2022 Vaccination Center: 09914485475",
-                    style: TextStyle(
-                      fontSize: 18
-                    )
-                  )
-                ],
+                  ],
+                ),
               ),
             ),
           )
@@ -249,5 +258,67 @@ class _ProfileScreenState extends State<ProfileScreen> {
     } else {
       throw Exception("Failed to load user details.");
     }
+  }
+
+  Widget _buildPopupDialog(BuildContext context) {
+    return AlertDialog(
+      title: const Text("Select your vaccination status"),
+      content: StatefulBuilder(
+        builder: (BuildContext context, StateSetter setState) {
+          return Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: List<Widget>.generate(4, (int index) {
+              return RadioListTile<int>(
+                title: Text(vaccinationStatuses[index]),
+                value: index,
+                groupValue: _status,
+                onChanged: (int? value) {
+                  setState(() => _status = value);
+                }
+              );
+            }),
+          );
+        },
+      ),
+      actions: <Widget>[
+        ElevatedButton(
+          onPressed: () {
+            updateVaccinationStatus();
+          },
+          child: const Text('Save'),
+          style: ElevatedButton.styleFrom(
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(25.0)
+            ),
+            primary: const Color(0xFF008999),
+            onPrimary: Colors.white
+          ),
+        ),
+        ElevatedButton(
+          onPressed: () {
+            Navigator.of(context).pop();
+          },
+          child: const Text('Cancel'),
+          style: ElevatedButton.styleFrom(
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(25.0)
+            ),
+            primary: const Color(0xFFFF0000),
+            onPrimary: Colors.white
+          ),
+        ),
+      ],
+    );
+  }
+
+  updateVaccinationStatus() async {
+    await FirebaseFirestore.instance
+      .collection('users')
+      .doc("RbdBr0tRI2O8lDdK1ad7VV440O12")
+      .update({'vaccinationStatus': _status})
+      .then(Navigator.of(context).pop)
+      .catchError((error) => ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content: Text(error))));
   }
 }
