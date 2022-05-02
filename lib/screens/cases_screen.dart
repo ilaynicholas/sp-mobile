@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import '../models/case.dart';
 import '../models/region_case.dart';
+import 'user/status_widget.dart';
 
 class CasesScreen extends StatefulWidget {
   const CasesScreen({ Key? key }) : super(key: key);
@@ -37,7 +38,8 @@ class _CasesScreenState extends State<CasesScreen> {
         child: Column(
           children: [
             const Padding(padding: EdgeInsets.only(top: 56)),
-            const SizedBox(height: 56),
+            const StatusWidget(),
+            const Padding(padding: EdgeInsets.only(bottom: 20)),
             Container(
               height: 80,
               width: 350,

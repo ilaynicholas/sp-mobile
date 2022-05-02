@@ -315,7 +315,8 @@ class _RegisterUserScreenState extends State<RegisterUserScreen> {
                                 number: "09" + numberController.text,
                                 municipality: "Gapan City",
                                 barangay: _selectedValueBarangay,
-                                vaccinationStatus: vaccinationStatuses.indexOf(_selectedValueStatus!)
+                                vaccinationStatus: vaccinationStatuses.indexOf(_selectedValueStatus!),
+                                covidStatus: 0
                               );
                               addUser(
                                 FirebaseAuth.instance.currentUser!.uid,
@@ -367,7 +368,8 @@ class _RegisterUserScreenState extends State<RegisterUserScreen> {
         'number': newUser.number,
         'municipality': newUser.municipality,
         'barangay': newUser.barangay,
-        'vaccinationStatus': newUser.vaccinationStatus
+        'vaccinationStatus': newUser.vaccinationStatus,
+        'covidStatus': newUser.covidStatus
       })
       .catchError((error) => ScaffoldMessenger.of(context).showSnackBar(SnackBar(
           content: Text(error))));

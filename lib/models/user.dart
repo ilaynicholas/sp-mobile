@@ -4,13 +4,15 @@ class NewUser {
   final String municipality;
   final String? barangay;
   final int vaccinationStatus;
+  final int covidStatus;
 
   const NewUser({
     required this.name,
     required this.number,
     required this.municipality,
     required this.barangay,
-    required this.vaccinationStatus
+    required this.vaccinationStatus,
+    required this.covidStatus
   });
 
   factory NewUser.fromJson(Map<String, dynamic> json) {
@@ -19,7 +21,8 @@ class NewUser {
       number: json['number'], 
       municipality: json['municipality'], 
       barangay: json['barangay'], 
-      vaccinationStatus: json['vaccinationStatus']
+      vaccinationStatus: json['vaccinationStatus'],
+      covidStatus: json['covidStatus']
     );
   }
 }
