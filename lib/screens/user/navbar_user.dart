@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:sp_mobile/screens/user/notifications_screen.dart';
+import 'package:sp_mobile/screens/user/status_widget.dart';
 import '../cases_screen.dart';
 import 'profile_screen.dart';
 import 'qr_code_screen.dart';
@@ -14,15 +16,11 @@ class UserNavbar extends StatefulWidget {
 class _UserNavbarState extends State<UserNavbar> {
   int _selectedIndex = 2;
 
-  static const TextStyle optionStyle = TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
   static const List<Widget> _widgetOptions = <Widget>[
     SymptomsScreen(),
     CasesScreen(),
     QRCodeScreen(),
-    Text(
-      'Index 3: Notifications',
-      style: optionStyle,
-    ),
+    NotificationsScreen(),
     ProfileScreen()
   ];
 
@@ -34,47 +32,43 @@ class _UserNavbarState extends State<UserNavbar> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      decoration: const BoxDecoration(
-        gradient: LinearGradient(
-          begin: Alignment.topCenter,
-          end: Alignment.bottomCenter,
-          colors: [Colors.white, Color(0xFF00CDA6)]
-        )
+    return Scaffold(
+      backgroundColor: Colors.transparent,
+      body: Center(child: _widgetOptions.elementAt(_selectedIndex)),
+      appBar: AppBar(
+        title: const StatusWidget(),
+        backgroundColor: Colors.white,
+        foregroundColor: Colors.black,
       ),
-      child: Scaffold(
-        backgroundColor: Colors.transparent,
-        body: Center(child: _widgetOptions.elementAt(_selectedIndex)),
-        bottomNavigationBar: BottomNavigationBar(
-          items: const [
-            BottomNavigationBarItem(
-              icon: Icon(Icons.coronavirus_outlined),
-              label: "SYMPTOMS"
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.show_chart_outlined),
-              label: "CASES"
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.qr_code_outlined),
-              label: "QR CODE"
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.notifications_none_outlined),
-              label: "NOTIFICATIONS",
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.person_outline_outlined),
-              label: "PROFILE"
-            )
-          ],
-          currentIndex: _selectedIndex,
-          selectedItemColor: const Color(0xFF13677D),
-          unselectedItemColor: Colors.black,
-          showUnselectedLabels: true,
-          onTap: _onItemTapped
-        )
-      ),
+      bottomNavigationBar: BottomNavigationBar(
+        items: const [
+          BottomNavigationBarItem(
+            icon: Icon(Icons.coronavirus_outlined),
+            label: "SYMPTOMS"
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.show_chart_outlined),
+            label: "CASES"
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.qr_code_outlined),
+            label: "QR CODE"
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.notifications_none_outlined),
+            label: "NOTIFICATIONS",
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.person_outline_outlined),
+            label: "PROFILE"
+          )
+        ],
+        currentIndex: _selectedIndex,
+        selectedItemColor: const Color(0xFF13677D),
+        unselectedItemColor: Colors.black,
+        showUnselectedLabels: true,
+        onTap: _onItemTapped
+      )
     );
   }
 }

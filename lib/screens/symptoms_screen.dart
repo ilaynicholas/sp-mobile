@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 
-import 'user/status_widget.dart';
-
 class SymptomsScreen extends StatefulWidget {
   const SymptomsScreen({ Key? key }) : super(key: key);
 
@@ -24,9 +22,7 @@ class _SymptomsScreenState extends State<SymptomsScreen> {
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
-          const Padding(padding: EdgeInsets.only(top: 56)),
-          const Center(child: StatusWidget()),
-          const Padding(padding: EdgeInsets.only(bottom: 20)),
+          const SizedBox(height: 20),
           Align(
             alignment: Alignment.centerRight,
             child: Image.asset(

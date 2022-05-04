@@ -1,6 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:sp_mobile/screens/user/status_widget.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:flutter/material.dart';
 import '../../models/user.dart';
@@ -46,9 +45,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
       ),
       child: Column(
         children: [
-          const Padding(padding: EdgeInsets.only(top: 56)),
-          const StatusWidget(),
-          const Padding(padding: EdgeInsets.only(bottom: 20)),
+          const SizedBox(height: 20),
           Expanded(
             child: Container(
               width: double.infinity,

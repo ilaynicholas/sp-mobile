@@ -1,7 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:qr_flutter/qr_flutter.dart';
-import 'package:sp_mobile/screens/user/status_widget.dart';
 
 class QRCodeScreen extends StatefulWidget {
   const QRCodeScreen({ Key? key }) : super(key: key);
@@ -26,7 +25,6 @@ class _QRCodeScreenState extends State<QRCodeScreen> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
-            const StatusWidget(),
             Container(
               padding: const EdgeInsets.all(10),
               height: 170,
