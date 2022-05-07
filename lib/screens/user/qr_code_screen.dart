@@ -51,7 +51,7 @@ class _QRCodeScreenState extends State<QRCodeScreen> {
               )
             ),
             QrImage(
-              data: "1", //FirebaseAuth.instance.currentUser!.uid,
+              data: "GapanTrax: 1", //FirebaseAuth.instance.currentUser!.uid,
               version: QrVersions.auto,
               size: 300.0,
               backgroundColor: Colors.white
