@@ -42,7 +42,7 @@ class DefaultFirebaseOptions {
 
   static const FirebaseOptions web = FirebaseOptions(
     apiKey: 'AIzaSyCu68omhLz-iU0GLwdWsKw7AmiKUCZ99uM',
-    appId: '1:301834197239:web:c597c3b801adb05661dbf2',
+    appId: '1:301834197239:web:974571b0f635b67861dbf2',
     messagingSenderId: '301834197239',
     projectId: 'sp-mobile-25c5a',
     authDomain: 'sp-mobile-25c5a.firebaseapp.com',

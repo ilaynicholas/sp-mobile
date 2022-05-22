@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:mobile_scanner/mobile_scanner.dart';
 import '../../models/log.dart';
@@ -11,8 +12,14 @@ class QRScannerScreen extends StatefulWidget {
 }
 
 class _QRScannerScreenState extends State<QRScannerScreen> {
+  Stream<DocumentSnapshot> stream = FirebaseFirestore.instance
+      .collection('establishments')
+      .doc(FirebaseAuth.instance.currentUser!.uid)
+      .snapshots();
+
   String? code;
   bool isValidCode = false;
+  bool isApproved = false;
 
   @override
   Widget build(BuildContext context) {
@@ -54,16 +61,35 @@ class _QRScannerScreenState extends State<QRScannerScreen> {
                 ),
               )
             ),
-            SizedBox(
-              height: 300,
-              child: MobileScanner(
-                fit: BoxFit.contain,
-                allowDuplicates: false,
-                onDetect: (barcode, args) {
-                  code = barcode.rawValue;
-                  isValidCode = checkCodeValidity(code!);
-                },
-              ),
+            StreamBuilder(
+              stream: stream,
+              builder: (BuildContext context, AsyncSnapshot<DocumentSnapshot> snapshot) {
+                if (snapshot.hasData) {
+                  if (snapshot.data!['isApproved']) {
+                    return SizedBox(
+                      height: 300,
+                      child: MobileScanner(
+                        fit: BoxFit.contain,
+                        allowDuplicates: false,
+                        onDetect: (barcode, args) {
+                          code = barcode.rawValue;
+                          setState(() {
+                            isValidCode = checkCodeValidity(code!);
+                          });
+                        },
+                      )
+                    );
+                  } else {
+                    return const SizedBox(
+                      height: 300,
+                      child: Center(
+                        child: Text("Establishment not yet approved. Cannot use QR code scanner.")
+                      )
+                    );
+                  }
+                }
+                return const CircularProgressIndicator();
+              }
             ),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 8),
@@ -71,11 +97,14 @@ class _QRScannerScreenState extends State<QRScannerScreen> {
                 onPressed: isValidCode
                   ? () {
                       Log log = Log(
-                        establishmentId: "xveDc0fRVPbznYmLIWidn8yf2hq2", //FirebaseAuth.instance.currentUser!.uid
-                        userId: code!,
+                        establishmentId: FirebaseAuth.instance.currentUser!.uid,
+                        userId: factorCode(code!),
                         timestamp: Timestamp.now()
                       );
                       addLog(log);
+                      setState(() { 
+                        isValidCode = false;
+                      });
                     }
                   : null,
                 child: const Text(
@@ -103,11 +132,14 @@ class _QRScannerScreenState extends State<QRScannerScreen> {
 
   bool checkCodeValidity(String code) {
     if (code.startsWith("GapanTrax: ")) {
-      code = code.replaceAll("GapanTrax: ", "");
       return true;
     }
 
     return false;
+  }
+
+  String factorCode(String code) {
+    return code.replaceAll("GapanTrax: ", "");
   }
 
   addLog(Log log) async {
@@ -117,6 +149,6 @@ class _QRScannerScreenState extends State<QRScannerScreen> {
         "establishmentId": log.establishmentId,
         "userId": log.userId,
         "timestamp": log.timestamp
-    });
+      });
   }
 }

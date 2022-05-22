@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 class NotificationsScreen extends StatefulWidget {
@@ -10,7 +11,7 @@ class NotificationsScreen extends StatefulWidget {
 
 class _NotificationsScreenState extends State<NotificationsScreen> {
   Stream<DocumentSnapshot> documentStream = FirebaseFirestore.instance.collection('users')
-    .doc("RbdBr0tRI2O8lDdK1ad7VV440O12")
+    .doc(FirebaseAuth.instance.currentUser!.uid)
     .snapshots();
     
   @override

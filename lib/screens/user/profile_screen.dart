@@ -13,7 +13,7 @@ class ProfileScreen extends StatefulWidget {
 
 class _ProfileScreenState extends State<ProfileScreen> {
   Stream<DocumentSnapshot> documentStream = FirebaseFirestore.instance.collection('users')
-    .doc("RbdBr0tRI2O8lDdK1ad7VV440O12")
+    .doc(FirebaseAuth.instance.currentUser!.uid)
     .snapshots();
 
   late Future<NewUser> futureUserDetails;
@@ -242,7 +242,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
     await FirebaseFirestore.instance
       .collection('users')
-      .doc("RbdBr0tRI2O8lDdK1ad7VV440O12")
+      .doc(FirebaseAuth.instance.currentUser!.uid)
       .get()
       .then((DocumentSnapshot documentSnapshot) {
         if(documentSnapshot.exists) {
@@ -314,7 +314,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
   updateVaccinationStatus() async {
     await FirebaseFirestore.instance
       .collection('users')
-      .doc("RbdBr0tRI2O8lDdK1ad7VV440O12")
+      .doc(FirebaseAuth.instance.currentUser!.uid)
       .update({'vaccinationStatus': _status})
       .then(Navigator.of(context).pop)
       .catchError((error) => ScaffoldMessenger.of(context).showSnackBar(SnackBar(
