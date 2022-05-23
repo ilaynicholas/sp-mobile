@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:qr_flutter/qr_flutter.dart';
+import 'package:screenshot/screenshot.dart';
 
 class QRCodeScreen extends StatefulWidget {
   const QRCodeScreen({ Key? key }) : super(key: key);
@@ -42,7 +43,7 @@ class _QRCodeScreenState extends State<QRCodeScreen> {
               ),
               child: const Center(
                 child: Text(
-                  "This is your personal QR code. Show this whenever you enter establishments in Gapan City. You may opt to download the QR code as an image.",
+                  "This is your personal QR code. Show this whenever you enter establishments in Gapan City.",
                   style: TextStyle(
                     fontSize: 16,
                   ),
@@ -50,38 +51,71 @@ class _QRCodeScreenState extends State<QRCodeScreen> {
                 ),
               )
             ),
-            QrImage(
-              data: "GapanTrax: " + FirebaseAuth.instance.currentUser!.uid,
-              version: QrVersions.auto,
-              size: 300.0,
-              backgroundColor: Colors.white
-            ),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 8),
-              child: ElevatedButton(
-                onPressed: () { // save image
-                
-                },
-                child: const Text(
-                    "DOWNLOAD",
-                    style: TextStyle(
-                        fontSize: 24.0,
-                        fontWeight: FontWeight.bold
-                      )
+            buildQrCode(),
+            Container(
+              padding: const EdgeInsets.all(10),
+              height: 170,
+              width: 300,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(25),
+                color: Colors.white,
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.grey.withOpacity(0.5),
+                    blurRadius: 4,
+                    offset: const Offset(4, 8), // changes position of shadow
                   ),
-                style: ElevatedButton.styleFrom(
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(25.0)
+                ],
+              ),
+              child: const Center(
+                child: Text(
+                  "You may opt to take a screenshot of your QR code for future use.",
+                  style: TextStyle(
+                    fontSize: 16,
                   ),
-                  primary: const Color(0xFF008999),
-                  onPrimary: Colors.white,
-                  minimumSize: const Size(300, 60)
+                  textAlign: TextAlign.center
                 ),
               )
-            )
+            ),
+            // Padding(
+            //   padding: const EdgeInsets.symmetric(horizontal: 8),
+            //   child: ElevatedButton(
+            //     onPressed: () async { // save image
+            //       final controller = ScreenshotController();
+            //       await controller.captureFromWidget(
+            //         buildQrCode()
+            //       ).then((value) => print("yay"))
+            //       .onError((error, stackTrace) => print(error));
+            //     },
+            //     child: const Text(
+            //         "DOWNLOAD",
+            //         style: TextStyle(
+            //             fontSize: 24.0,
+            //             fontWeight: FontWeight.bold
+            //           )
+            //       ),
+            //     style: ElevatedButton.styleFrom(
+            //       shape: RoundedRectangleBorder(
+            //         borderRadius: BorderRadius.circular(25.0)
+            //       ),
+            //       primary: const Color(0xFF008999),
+            //       onPrimary: Colors.white,
+            //       minimumSize: const Size(300, 60)
+            //     ),
+            //   )
+            // )
           ],
         ),
       )
+    );
+  }
+
+  buildQrCode() {
+    return QrImage(
+      data: "GapanTrax: " + FirebaseAuth.instance.currentUser!.uid,
+      version: QrVersions.auto,
+      size: 300.0,
+      backgroundColor: Colors.white
     );
   }
 }
