@@ -36,6 +36,7 @@ class _UserNavbarState extends State<UserNavbar> {
       backgroundColor: Colors.transparent,
       body: Center(child: _widgetOptions.elementAt(_selectedIndex)),
       appBar: AppBar(
+        automaticallyImplyLeading: false,
         title: const StatusWidget(),
         backgroundColor: Colors.white,
         foregroundColor: Colors.black,

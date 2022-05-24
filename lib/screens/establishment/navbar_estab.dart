@@ -33,6 +33,7 @@ class _EstabNavbarState extends State<EstabNavbar> {
       backgroundColor: Colors.transparent,
       body: Center(child: _widgetOptions.elementAt(_selectedIndex)),
       appBar: AppBar(
+        automaticallyImplyLeading: false,
         title: const Text(
           "GapanTrax",
           style: TextStyle(
