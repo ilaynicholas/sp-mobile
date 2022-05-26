@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:sp_mobile/main.dart';
 import 'package:sp_mobile/models/establishment.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -166,6 +167,36 @@ class _ProfileEstabScreenState extends State<ProfileEstabScreen> {
                       style: TextStyle(
                         fontSize: 18
                       )
+                    ),
+                    const Padding(padding: EdgeInsets.symmetric(vertical: 10)),
+                    Center(
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 8),
+                        child: ElevatedButton(
+                          onPressed: () async {
+                            await FirebaseAuth.instance.signOut();
+                            Navigator.push(
+                              context, 
+                              MaterialPageRoute(builder: (context) => const InitializerWidget())
+                            );
+                          },
+                          child: const Text(
+                            "SIGN OUT",
+                            style: TextStyle(
+                                fontSize: 24.0,
+                                fontWeight: FontWeight.bold
+                              )
+                          ),
+                          style: ElevatedButton.styleFrom(
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(25.0)
+                            ),
+                            primary: const Color(0xFF008999),
+                            onPrimary: Colors.white,
+                            minimumSize: const Size(300, 60)
+                          ),
+                        )
+                      ),
                     )
                   ],
                 ),

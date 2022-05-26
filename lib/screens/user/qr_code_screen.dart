@@ -27,7 +27,7 @@ class _QRCodeScreenState extends State<QRCodeScreen> {
           children: [
             Container(
               padding: const EdgeInsets.all(10),
-              height: 170,
+              height: 120,
               width: 300,
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(25),
@@ -53,7 +53,7 @@ class _QRCodeScreenState extends State<QRCodeScreen> {
             buildQrCode(),
             Container(
               padding: const EdgeInsets.all(10),
-              height: 170,
+              height: 120,
               width: 300,
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(25),

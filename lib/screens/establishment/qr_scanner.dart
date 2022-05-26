@@ -38,7 +38,7 @@ class _QRScannerScreenState extends State<QRScannerScreen> {
           children: [
             Container(
               padding: const EdgeInsets.all(10),
-              height: 170,
+              height: 120,
               width: 300,
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(25),
@@ -70,7 +70,7 @@ class _QRScannerScreenState extends State<QRScannerScreen> {
                       height: 300,
                       child: MobileScanner(
                         fit: BoxFit.contain,
-                        allowDuplicates: false,
+                        allowDuplicates: true,
                         onDetect: (barcode, args) {
                           code = barcode.rawValue;
                           setState(() {

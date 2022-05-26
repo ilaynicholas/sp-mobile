@@ -179,19 +179,13 @@ class _RegisterEstabScreenState extends State<RegisterEstabScreen> {
                       Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
                         child: TextFormField(
-                          controller: numberController,
-                          validator: (value) {
-                            if(value == null || value.isEmpty) return "Please enter your mobile number";
-                            if(value.length != 9) return "Please enter 11 digits";
-                            return null;
-                          },
-                          decoration: const InputDecoration(
-                            border: OutlineInputBorder(
+                          enabled: false,
+                          decoration: InputDecoration(
+                            border: const OutlineInputBorder(
                               borderRadius: BorderRadius.all(Radius.circular(10))
                             ),
-                            labelText: "Mobile Number (09XXXXXXXXX)",
-                            labelStyle: TextStyle(fontSize: 14),
-                            prefixText: "09"
+                            labelText: FirebaseAuth.instance.currentUser!.uid,
+                            labelStyle: const TextStyle(fontSize: 14),
                           )
                         )
                       ),
@@ -247,10 +241,9 @@ class _RegisterEstabScreenState extends State<RegisterEstabScreen> {
                         child: ElevatedButton(
                           onPressed: () async {
                             if (_formKey.currentState!.validate()) {
-                              await auth.signInAnonymously();
                               Establishment estab = Establishment(
                                 name: nameController.text, 
-                                number: "09" + numberController.text,
+                                number: FirebaseAuth.instance.currentUser!.phoneNumber,
                                 municipality: "Gapan City", 
                                 barangay: _selectedValueBarangay, 
                                 isApproved: false

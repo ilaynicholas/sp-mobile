@@ -1,3 +1,5 @@
+// ignore: avoid_web_libraries_in_flutter
+import 'dart:html';
 import 'package:flutter/material.dart';
 import 'package:sp_mobile/screens/establishment/qr_scanner.dart';
 import 'profile_estab_screen.dart';
@@ -29,6 +31,11 @@ class _EstabNavbarState extends State<EstabNavbar> {
 
   @override
   Widget build(BuildContext context) {
+    final el = window.document.getElementById('__ff-recaptcha-container');
+    if(el != null) {
+      el.style.visibility = 'hidden';
+    }
+
     return Scaffold(
       backgroundColor: Colors.transparent,
       body: Center(child: _widgetOptions.elementAt(_selectedIndex)),

@@ -16,7 +16,6 @@ class _RegisterUserScreenState extends State<RegisterUserScreen> {
   final firstNameController = TextEditingController();
   final middleNameController = TextEditingController();
   final lastNameController = TextEditingController();
-  final numberController = TextEditingController();
 
   FirebaseAuth auth = FirebaseAuth.instance;
 
@@ -61,7 +60,6 @@ class _RegisterUserScreenState extends State<RegisterUserScreen> {
     firstNameController.dispose();
     middleNameController.dispose();
     lastNameController.dispose();
-    numberController.dispose();
     super.dispose();
   }
 
@@ -207,19 +205,13 @@ class _RegisterUserScreenState extends State<RegisterUserScreen> {
                       Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
                         child: TextFormField(
-                          controller: numberController,
-                          validator: (value) {
-                            if(value == null || value.isEmpty) return "Please enter your mobile number";
-                            if(value.length != 9) return "Please enter 11 digits";
-                            return null;
-                          },
-                          decoration: const InputDecoration(
-                            border: OutlineInputBorder(
+                          enabled: false,
+                          decoration: InputDecoration(
+                            border: const OutlineInputBorder(
                               borderRadius: BorderRadius.all(Radius.circular(10))
                             ),
-                            labelText: "Mobile Number (09XXXXXXXXX)",
-                            labelStyle: TextStyle(fontSize: 14),
-                            prefixText: "09"
+                            labelText: FirebaseAuth.instance.currentUser!.phoneNumber,
+                            labelStyle: const TextStyle(fontSize: 14),
                           )
                         )
                       ),
@@ -309,10 +301,9 @@ class _RegisterUserScreenState extends State<RegisterUserScreen> {
                         child: ElevatedButton(
                           onPressed: () async {
                             if (_formKey.currentState!.validate()) {
-                              await auth.signInAnonymously();
                               NewUser newUser = NewUser(
                                 name: middleNameController.text == "" ? firstNameController.text + " " + lastNameController.text : firstNameController.text + " " + middleNameController.text + " " + lastNameController.text,
-                                number: "09" + numberController.text,
+                                number: FirebaseAuth.instance.currentUser!.phoneNumber,
                                 municipality: "Gapan City",
                                 barangay: _selectedValueBarangay,
                                 vaccinationStatus: vaccinationStatuses.indexOf(_selectedValueStatus!),

@@ -1,6 +1,6 @@
 class NewUser {
   final String name;
-  final String number;
+  final String? number;
   final String municipality;
   final String? barangay;
   final int vaccinationStatus;
