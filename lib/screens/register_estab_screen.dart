@@ -184,7 +184,7 @@ class _RegisterEstabScreenState extends State<RegisterEstabScreen> {
                             border: const OutlineInputBorder(
                               borderRadius: BorderRadius.all(Radius.circular(10))
                             ),
-                            labelText: FirebaseAuth.instance.currentUser!.uid,
+                            labelText: FirebaseAuth.instance.currentUser!.phoneNumber,
                             labelStyle: const TextStyle(fontSize: 14),
                           )
                         )
