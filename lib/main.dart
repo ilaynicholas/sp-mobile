@@ -1,5 +1,3 @@
-// ignore: avoid_web_libraries_in_flutter
-import 'dart:html';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -58,11 +56,18 @@ class _InitializerWidgetState extends State<InitializerWidget> {
   bool isOtp = false;
 
   @override
-  void initState(){
+  void initState() {
     super.initState();
     _auth = FirebaseAuth.instance;
     _user = _auth.currentUser;
     isLoading = false;
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    phoneController.dispose();
+    otpController.dispose();
   }
 
   @override
@@ -104,10 +109,10 @@ class _InitializerWidgetState extends State<InitializerWidget> {
 
   buildMobileForm(context) {
     final formKey = GlobalKey<FormState>();
-    final el = window.document.getElementById('__ff-recaptcha-container');
-    if(el != null) {
-      el.style.visibility = 'hidden';
-    }
+    // final el = window.document.getElementById('__ff-recaptcha-container');
+    // if(el != null) {
+    //   el.style.visibility = 'hidden';
+    // }
     return Scaffold(
       body: Container(
         decoration: const BoxDecoration(
@@ -191,10 +196,10 @@ class _InitializerWidgetState extends State<InitializerWidget> {
 
   buildOtpForm(context) {
     final formKey = GlobalKey<FormState>();
-    final el = window.document.getElementById('__ff-recaptcha-container');
-    if(el != null) {
-      el.style.visibility = 'hidden';
-    }
+    // final el = window.document.getElementById('__ff-recaptcha-container');
+    // if(el != null) {
+    //   el.style.visibility = 'hidden';
+    // }
 
     return Scaffold(
       body: Container(
