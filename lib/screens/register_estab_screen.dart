@@ -78,15 +78,6 @@ class _RegisterEstabScreenState extends State<RegisterEstabScreen> {
               Row(
                 children: [
                   const Spacer(),
-                  Container(
-                    width: 85,
-                    height: 85,
-                    decoration: const BoxDecoration(
-                      color: Color(0xFF008999),
-                      shape: BoxShape.circle
-                    )
-                  ),
-                  const Spacer(),
                   Column(
                     children: const [
                       Text(

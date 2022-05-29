@@ -22,14 +22,6 @@ class LoginScreen extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.end,
           children: [
             const Spacer(),
-            Container(
-              width: 200,
-              height: 200,
-              decoration: const BoxDecoration(
-                color: Color(0xFF008999),
-                shape: BoxShape.circle
-              )
-            ),
             const Padding(padding: EdgeInsets.only(top: 15)),
             const Text(
               "GapanTrax",

@@ -36,19 +36,19 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      decoration: const BoxDecoration(
-        gradient: LinearGradient(
-          begin: Alignment.topCenter,
-          end: Alignment.bottomCenter,
-          colors: [Colors.white, Color(0xFF00CDA6)]
-        )
-      ),
-      child: Column(
-        children: [
-          const SizedBox(height: 20),
-          Expanded(
-            child: Container(
+    return SingleChildScrollView(
+      child: Container(
+        decoration: const BoxDecoration(
+          gradient: LinearGradient(
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
+            colors: [Colors.white, Color(0xFF00CDA6)]
+          )
+        ),
+        child: Column(
+          children: [
+            const SizedBox(height: 20),
+            Container(
               width: double.infinity,
               decoration: const BoxDecoration(
                 borderRadius: BorderRadius.only(
@@ -69,7 +69,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           return Text(
                             snapshot.data!.name.toString(),
                             style: const TextStyle(
-                              fontSize: 24,
+                              fontSize: 22,
                               fontWeight: FontWeight.bold,
                               color: Color(0xFF13677D)
                             )
@@ -77,7 +77,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         } else if (snapshot.hasError) {
                           return Text('${snapshot.error}');
                         }
-          
+            
                         return const CircularProgressIndicator();
                       }
                     ),
@@ -88,13 +88,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           return Text(
                             snapshot.data!.barangay.toString() + ", " + snapshot.data!.municipality.toString(),
                             style: const TextStyle(
-                              fontSize: 18,
+                              fontSize: 16,
                             )
                           );
                         } else if (snapshot.hasError) {
                           return Text('${snapshot.error}');
                         }
-          
+            
                         return const CircularProgressIndicator();
                       }
                     ),
@@ -105,13 +105,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           return Text(
                             snapshot.data!.number.toString(),
                             style: const TextStyle(
-                              fontSize: 18,
+                              fontSize: 16,
                             )
                           );
                         } else if (snapshot.hasError) {
                           return Text('${snapshot.error}');
                         }
-          
+            
                         return const CircularProgressIndicator();
                       }
                     ),
@@ -122,14 +122,14 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           return Text(
                             vaccinationStatuses[snapshot.data!['vaccinationStatus']],
                             style: const TextStyle(
-                              fontSize: 18,
+                              fontSize: 16,
                               fontWeight: FontWeight.bold
                             )
                           );
                         } else if (snapshot.hasError) {
                           return Text('${snapshot.error}');
                         }
-          
+            
                         return const CircularProgressIndicator();
                       }
                     ),
@@ -147,7 +147,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           child: const Text(
                               "UPDATE VACCINATION STATUS",
                               style: TextStyle(
-                                  fontSize: 18.0,
+                                  fontSize: 16.0,
                                   fontWeight: FontWeight.bold
                                 )
                             ),
@@ -166,7 +166,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     const Text(
                       "Essential Links",
                       style: TextStyle(
-                        fontSize: 24,
+                        fontSize: 22,
                         fontWeight: FontWeight.bold
                       ),
                     ),
@@ -175,7 +175,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       child: const Text(
                         "\u2022 Batang Gapan Facebook Page",
                         style: TextStyle(
-                          fontSize: 18,
+                          fontSize: 16,
                           decoration: TextDecoration.underline
                         )
                       ),
@@ -185,7 +185,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       child: const Text(
                         "\u2022 Gapan City Official Website",
                         style: TextStyle(
-                          fontSize: 18,
+                          fontSize: 16,
                           decoration: TextDecoration.underline
                         )
                       ),
@@ -195,7 +195,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       child: const Text(
                         "\u2022 Department of Health Official Website",
                         style: TextStyle(
-                          fontSize: 18,
+                          fontSize: 16,
                           decoration: TextDecoration.underline
                         )
                       ),
@@ -205,7 +205,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     const Text(
                       "Hotlines",
                       style: TextStyle(
-                        fontSize: 24,
+                        fontSize: 22,
                         fontWeight: FontWeight.bold
                       ),
                     ),
@@ -213,19 +213,19 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     const Text(
                       "\u2022 Local Hospital: 09759196958",
                       style: TextStyle(
-                        fontSize: 18
+                        fontSize: 16
                       )
                     ),
                     const Text(
                       "\u2022 City Hall: (044) 4860513",
                       style: TextStyle(
-                        fontSize: 18
+                        fontSize: 16
                       )
                     ),
                     const Text(
                       "\u2022 Vaccination Center: 09914485475",
                       style: TextStyle(
-                        fontSize: 18
+                        fontSize: 16
                       )
                     ),
                     const Padding(padding: EdgeInsets.symmetric(vertical: 10)),
@@ -243,7 +243,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           child: const Text(
                             "SIGN OUT",
                             style: TextStyle(
-                                fontSize: 24.0,
+                                fontSize: 22.0,
                                 fontWeight: FontWeight.bold
                               )
                           ),
@@ -261,10 +261,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   ],
                 ),
               ),
-            ),
-          )
-        ]
-      )
+            )
+          ]
+        )
+      ),
     );
   }
 
